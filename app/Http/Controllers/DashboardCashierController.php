@@ -99,6 +99,6 @@ class DashboardCashierController extends Controller
             ->get();
         $title = "About";
 
-        return view('artikel', compact('pbi59s', 'pbi60s', 'pbi61s', 'pbi62s', 'title'));
+        return view('/admin/dashboard-admin', compact('pbi59s', 'pbi60s', 'pbi61s', 'pbi62s', 'title'));
     }
 }

@@ -1,175 +1,200 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title></title> <!-- Hapus pageTitle -->
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      background-color: #f4f4f4;
-      display: flex;
-    }
+@extends('admin.layout.master')
 
-    header {
-      background-color: #fff;
-      color: #fff;
-      padding: 1em;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      width: 100%;
-      position: fixed;
-      top: 0;
-      left: 0;
-      height: 60px;
-      box-sizing: border-box;
-    }
+@section('content')
+    <main>
+        <h1>Dashboard Admin</h1>
+        <div class="container mt-4">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Admin Harian Transaksi Preview Per Hari</h5>
+                            <canvas id="chart"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Admin Kolaborasi Pengajuan Preview Per Bulan</h5>
+                            <canvas id="chart2"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-4">
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Admin Reservasi Tempat Preview Per Hari</h5>
+                            <canvas id="chart3"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Admin Data Pelamar Preview Per Bulan</h5>
+                            <canvas id="chart4"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            Chart.register(ChartDataLabels);
+            const pbi59 = @json($pbi59s);
+            const pbi60 = @json($pbi60s);
+            const pbi61 = @json($pbi61s);
+            const pbi62 = @json($pbi62s);
 
-    .logo {
-      font-size: 1.5em;
-      font-weight: bold;
-      color: #67BC67;
-    }
+            // Processing data for the first chart
+            const labels_response = pbi59.map(data => data.dayname);
+            const data_response = pbi59.map(data => data.count);
 
-    nav {
-      background-color: #67BC67;
-      padding: 1em;
-      height: 100vh;
-      width: 200px;
-      position: fixed;
-      top: 60px;
-      left: 0;
-      box-sizing: border-box;
-    }
+            const data = {
+                labels: labels_response,
+                datasets: [{
+                    label: 'Admin Harian Transaksi Preview',
+                    data: data_response,
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.7)', // Light Red
+                        'rgba(75, 192, 192, 0.7)', // Light Teal
+                        'rgba(255, 206, 86, 0.7)', // Light Yellow
+                        'rgba(153, 102, 255, 0.7)', // Light Purple
+                        'rgba(54, 162, 235, 0.7)' // Light Blue
+                    ],
+                    hoverOffset: 4
+                }],
+                options: {
+                    plugins: {
+                        datalabels: {
+                            color: '#ffffff'
+                        }
+                    }
+                },
+            };
+            const ctx = document.getElementById('chart').getContext('2d');
 
-    nav ul {
-      list-style: none;
-      margin: 0;
-      padding: 0;
-    }
+            const config = {
+                type: 'doughnut',
+                data: data
+            };
 
-    nav ul li {
-      margin-bottom: 1em;
-    }
+            new Chart(ctx, config);
 
-    nav ul li a {
-      color: #fff;
-      text-decoration: none;
-      display: block;
-      padding: 0.5em 0;
-    }
+            // Processing data for the second chart
+            const labels_response2 = pbi60.map(data => data.month);
+            const data_response2 = pbi60.map(data => data.count);
 
-    nav ul li ul {
-      display: none;
-      list-style: none;
-      padding-left: 1em;
-    }
+            const data2 = {
+                labels: labels_response2,
+                datasets: [{
+                    label: 'Admin Kolaborasi Pengajuan Preview Per Bulan',
+                    data: data_response2,
+                    backgroundColor: [
+                        'rgba(255, 159, 64, 0.7)', // Light Orange
+                        'rgba(75, 192, 192, 0.7)', // Light Teal
+                        'rgba(153, 102, 255, 0.7)', // Light Purple
+                        'rgba(255, 205, 86, 0.7)', // Light Yellow
+                        'rgba(54, 162, 235, 0.7)' // Light Blue
+                    ],
+                    hoverOffset: 4
+                }],
+                options: {
+                    plugins: {
+                        datalabels: {
+                            color: '#ffffff'
+                        }
+                    }
+                },
+            };
 
-    nav ul li ul li {
-      margin-bottom: 0.5em;
-    }
+            const ctx2 = document.getElementById('chart2').getContext('2d');
 
-    nav ul li ul li a {
-      padding: 0.5em 0;
-      background-color: #6FCF6F;
-    }
+            const config2 = {
+                type: 'pie',
+                data: data2
+            };
 
-    nav ul li a:hover {
-      background-color: #555;
-    }
+            new Chart(ctx2, config2);
 
-    nav ul li a.active + ul {
-      display: block;
-    }
+            // Processing data for the third chart
+            const labels_response3 = pbi61.map(data => data.dayname);
+            const data_response3 = pbi61.map(data => data.count);
 
-    main {
-      margin-left: 220px;
-      padding: 2em;
-      width: calc(100% - 220px);
-      margin-top: 60px;
-      box-sizing: border-box;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
+            const data3 = {
+                labels: labels_response3,
+                datasets: [{
+                    label: 'Admin Reservasi Tempat Preview Per Hari',
+                    data: data_response3,
+                    backgroundColor: [
+                        'rgba(54, 162, 235, 0.7)', // Light Blue
+                        'rgba(255, 99, 132, 0.7)', // Light Red
+                        'rgba(255, 205, 86, 0.7)', // Light Yellow
+                        'rgba(75, 192, 192, 0.7)', // Light Teal
+                        'rgba(153, 102, 255, 0.7)' // Light Purple
+                    ],
+                    hoverOffset: 4
+                }],
+                options: {
+                    plugins: {
+                        datalabels: {
+                            color: '#ffffff'
+                        }
+                    }
+                },
+            };
 
-    main h1 {
-      margin-top: 0;
-    }
+            const ctx3 = document.getElementById('chart3').getContext('2d');
 
-    /* Memperbarui warna tombol */
-    button {
-      background-color: #ccc;
-    }
+            const config3 = {
+                type: 'pie',
+                data: data3
+            };
 
-    /* Memberikan hover effect pada tombol */
-    button:hover {
-      background-color: #999;
-    }
+            new Chart(ctx3, config3);
 
-    /* Styling untuk header Riwayat Transaksi dan Waktu Transaksi */
-    .header-container {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      width: 100%;
-      margin-bottom: 20px;
-      box-sizing: border-box;
-      padding: 0 20px; /* Padding untuk memperjelas batas */
-    }
+            // Processing data for the fourth chart
+            const labels_response4 = pbi62.map(data => data.month);
+            const data_response4 = pbi62.map(data => data.count);
 
-    .header-container h2 {
-      margin: 0;
-      padding: 0;
-    }
+            const data4 = {
+                labels: labels_response4,
+                datasets: [{
+                    label: 'Admin Data Pelamar Preview Per Bulan',
+                    data: data_response4,
+                    backgroundColor: [
+                        'rgba(75, 192, 192, 0.7)', // Light Teal
+                        'rgba(255, 159, 64, 0.7)', // Light Orange
+                        'rgba(153, 102, 255, 0.7)', // Light Purple
+                        'rgba(54, 162, 235, 0.7)', // Light Blue
+                        'rgba(255, 206, 86, 0.7)' // Light Yellow
+                    ],
+                    hoverOffset: 4
+                }],
+                options: {
+                    plugins: {
+                        datalabels: {
+                            color: '#ffffff'
+                        }
+                    }
+                },
+            };
 
-    .header-border {
-      border-top: 2px solid #333; /* Garis batas */
-      width: 100%;
-      margin-top: 10px;
-    }
-  </style>
-</head>
-<body>
-  <header>
-    <div class="logo">Bento kopi</div>
-  </header>
-  <nav>
-    <ul>
-      <li><a href="/admin/dashboard">Dashboard</a></li>
-      <li>
-        <a href="#!" class="menu-toggle">Menu</a>
-        <ul>
-          <li><a href="/admin/menu/add">Tambah Menu</a></li>
-          <li><a href="/admin/menu/food">Menu Makanan</a></li>
-          <li><a href="/admin/menu/drinks">Menu Minuman</a></li>
-        </ul>
-      </li>
-      <li><a href="/admin/transactions">Riwayat Transaksi</a></li>
-      <li><a href="/admin/collaboration">Kolaborasi</a></li>
-      <li><a href="/admin/jobs">Lowongan Kerja</a></li>
-      <li><a href="/admin/location">Lokasi</a></li>
-      <li><a href="/admin/articles">Artikel</a></li>
-    </ul>
-  </nav>
-  <main>
-    <div class="header-container">
-      <h2>Riwayat Transaksi</h2>
-      <div class="header-border"></div>
-      <h2>Waktu Transaksi</h2>
-    </div>
-    <h1></h1> <!-- Hapus pageTitle -->
-  </main>
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const menuToggle = document.querySelector('.menu-toggle');
-      menuToggle.addEventListener('click', () => {
-        menuToggle.classList.toggle('active');
-      });
-    });
-  </script>
-</body>
-</html>
+            const ctx4 = document.getElementById('chart4').getContext('2d');
+
+            const config4 = {
+                type: 'pie',
+                data: data4
+            };
+
+            new Chart(ctx4, config4);
+        });
+    </script>
+
+@endsection
