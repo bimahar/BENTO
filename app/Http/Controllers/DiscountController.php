@@ -9,7 +9,7 @@ class DiscountController extends Controller
 {
     public function create()
     {
-        return view('dashboardcashier.discount.index');
+        return view('dashboardcashier.discount.create');
     }
 
     public function store(Request $request)
@@ -21,6 +21,26 @@ class DiscountController extends Controller
 
         Discount::create($validated);
 
-        return redirect()->route('discounts.create')->with('success', 'Diskon berhasil ditambahkan.');
+        return redirect()->route('discounts.create')->with('insertdiscountsuccess', 'Diskon berhasil ditambahkan.');
+    }
+
+    public function index()
+    {
+        $discounts = Discount::all();
+        return view('dashboardcashier.discount.index', compact('discounts'));
+    }
+
+    public function show()
+    {
+        $discounts = Discount::all();
+        return view('dashboardcashier.discount.show', compact('discounts'));
+    }
+
+    public function destroy($id)
+    {
+        $discount = Discount::findOrFail($id);
+        $discount->delete();
+
+        return redirect()->back()->with('deletediscountsuccess', 'Diskon berhasil dihapus.');
     }
 }

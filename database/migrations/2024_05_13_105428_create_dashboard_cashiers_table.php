@@ -18,6 +18,7 @@ return new class extends Migration
             $table->integer('qty');
             $table->bigInteger('total_price');
             $table->enum('status', ['Unpaid','Paid']);
+            $table->string('status_pemesanan')->default('Belum diproses');
             $table->timestamps();
         });
     }

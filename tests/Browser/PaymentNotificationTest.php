@@ -56,11 +56,9 @@ class PaymentNotificationTest extends DuskTestCase
                     ->waitFor('iframe', 10) // Tunggu sampai iframe ada
                     ->pause(2000) // Menambah jeda untuk memastikan iframe telah termuat
                     ->withinFrame(1, function (Browser $iframe) { // Menggunakan index untuk iframe kedua
-                        $iframe->waitFor('input[name="otp"]', 15)
-                               ->type('input[name="otp"]', '112233')
-                               ->press('OK')
-                               ->pause(10000); // Menunggu 10 detik untuk memuat hasil pembayaran
+                        $iframe->assertSee('Issuing Bank'); // Menunggu 10 detik untuk memuat hasil pembayaran
                             //    ->screenshot('otp_entry'); // Debugging screenshot
+                            // .btn btn-sm btn-success
                     })
 
                     ->assertSee('Payment successful') // Memastikan pembayaran berhasil

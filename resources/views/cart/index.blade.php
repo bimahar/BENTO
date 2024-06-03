@@ -26,72 +26,78 @@
         <!--Isi Page-->
         <div>
             <div class="row">
+                <a href="{{ route('cart.orderSummary') }}" class="btn btn-secondary mt-3"><i class="bi bi-arrow-left"></i> Semua Pesanan Anda</a>
+                @if($carts->isEmpty())
+                <div class="alert alert-warning mt-5" role="alert">
+                    Kamu belum ada yang dipesan, yuk pesan!
+                </div>
+                @else
                 <div class="col-md-9">
-                    @foreach ($carts as $cart)
-                    <section class="cart">
-                        <div class="container rounded-3 mt-5" style="background-color: #efefef">
-                            {{-- Baris Header Menu --}}
-                            <div class="d-flex justify-content-between pt-2">
-                                <div class="namaMenu fs-5 fw-bold ">
-                                    {{ $cart->menu->nama }}
-                                </div>
-                                <div class="hapusMenu">
-                                    <!-- Form untuk menghapus item -->
-                                    <form action="{{ route('cart.destroy', $cart->menu_id) }}" method="POST">
-                                        @method('DELETE')
-                                        @csrf
-                                        <button class="trash-icon " style="border:none ; background-color: transparent;"><i data-feather='trash-2'></i></button>
-                                    </form>
-                                </div>
-                            </div>
-                            <div class="line w-10"></div>
-                            {{-- Akhir Baris Header Menu --}}
-                            {{-- Gambar Menu --}}
-                            <div class="gambarMenu col-10 mt-4">
-                                <img src="{{ $cart->menu->gambar }}" alt="Product Image" style="max-width: 136px;">
-                            </div>
-                            {{-- Akhir Gambar Menu --}}
-                            {{-- Tombol dan Harga Menu --}}
-                            <div class="row ms-0">
-                                <span class="rounded-3 col-3 my-3"  style="border:1px solid #007200">
-                                    <div class="row d-flex">
-                                        <!-- Form untuk mengurangi jumlah -->
-                                        <div class="col-sm-4 d-flex justify-content-center">
-                                            <form action="{{ route('cart.reduceQuantity') }}" method="POST" class="">
-                                                 @csrf
-                                                <input type="hidden" value="{{ $cart->menu_id }}" name="menu_id">
-                                                <button class="minus-icon" style="border:none ; background-color: transparent;" >
-                                                    <i data-feather='minus'></i>
-                                                </button>
-                                            </form>
+                        @foreach ($carts as $cart)
+                            <section class="cart">
+                                <div class="container rounded-3 mt-5" style="background-color: #efefef">
+                                    {{-- Baris Header Menu --}}
+                                    <div class="d-flex justify-content-between pt-2">
+                                        <div class="namaMenu fs-5 fw-bold ">
+                                            {{ $cart->menu->nama }}
                                         </div>
-                                        <!-- Akhir Form untuk mengurangi jumlah -->
-                                         <!-- Jumlah item -->
-                                        <div class="jumlah col-sm-4 text-center " id="jumlahMenu">
-                                            {{ $cart->jumlah }}
-                                        </div>
-                                         <!-- Akhir Jumlah item -->
-                                        <!-- Form untuk menambah jumlah -->
-                                        <div class="col-sm-4 d-flex justify-content-center">
-                                            <form action="{{ route('cart.increaseQuantity') }}" method="POST">
+                                        <div class="hapusMenu">
+                                            <!-- Form untuk menghapus item -->
+                                            <form action="{{ route('cart.destroy', $cart->menu_id) }}" method="POST">
+                                                @method('DELETE')
                                                 @csrf
-                                                <input type="hidden" value="{{ $cart->menu_id }}" name="menu_id">
-                                                <button class="plus-icon" style="border:none ; background-color: transparent;"><i data-feather='plus'></i></button>
+                                                <button class="trash-icon " style="border:none ; background-color: transparent;"><i data-feather='trash-2'></i></button>
                                             </form>
                                         </div>
-                                        <!-- Akhir Form untuk menambah jumlah -->
                                     </div>
-                                </span>
-                                {{-- Harga --}}
-                                <div class="hargaMenu col-9 text-end pt-3">
-                                    Rp {{ $cart->menu->harga }}
+                                    <div class="line w-10"></div>
+                                    {{-- Akhir Baris Header Menu --}}
+                                    {{-- Gambar Menu --}}
+                                    <div class="gambarMenu col-10 mt-4">
+                                        <img src="{{ $cart->menu->gambar }}" alt="Product Image" style="max-width: 136px;">
+                                    </div>
+                                    {{-- Akhir Gambar Menu --}}
+                                    {{-- Tombol dan Harga Menu --}}
+                                    <div class="row ms-0">
+                                        <span class="rounded-3 col-3 my-3"  style="border:1px solid #007200">
+                                            <div class="row d-flex">
+                                                <!-- Form untuk mengurangi jumlah -->
+                                                <div class="col-sm-4 d-flex justify-content-center">
+                                                    <form action="{{ route('cart.reduceQuantity') }}" method="POST" class="">
+                                                        @csrf
+                                                        <input type="hidden" value="{{ $cart->menu_id }}" name="menu_id">
+                                                        <button class="minus-icon" style="border:none ; background-color: transparent;" >
+                                                            <i data-feather='minus'></i>
+                                                        </button>
+                                                    </form>
+                                                </div>
+                                                <!-- Akhir Form untuk mengurangi jumlah -->
+                                                <!-- Jumlah item -->
+                                                <div class="jumlah col-sm-4 text-center " id="jumlahMenu">
+                                                    {{ $cart->jumlah }}
+                                                </div>
+                                                <!-- Akhir Jumlah item -->
+                                                <!-- Form untuk menambah jumlah -->
+                                                <div class="col-sm-4 d-flex justify-content-center">
+                                                    <form action="{{ route('cart.increaseQuantity') }}" method="POST">
+                                                        @csrf
+                                                        <input type="hidden" value="{{ $cart->menu_id }}" name="menu_id">
+                                                        <button class="plus-icon" style="border:none ; background-color: transparent;"><i data-feather='plus'></i></button>
+                                                    </form>
+                                                </div>
+                                                <!-- Akhir Form untuk menambah jumlah -->
+                                            </div>
+                                        </span>
+                                        {{-- Harga --}}
+                                        <div class="hargaMenu col-9 text-end pt-3">
+                                            Rp {{ $cart->menu->harga }}
+                                        </div>
+                                        {{-- Akhir Harga --}}
+                                    </div>
+                                    {{-- Akhir Tombol dan Harga Menu --}}
                                 </div>
-                                {{-- Akhir Harga --}}
-                            </div>
-                            {{-- Akhir Tombol dan Harga Menu --}}
-                        </div>
-                    </section>
-                    @endforeach
+                            </section>
+                        @endforeach
                 </div>
                 <!-- Kolom kanan untuk menampilkan total harga dan pesanan tambahan -->
                 <div class="col-md-3">
@@ -106,7 +112,7 @@
                             @endif
                         </div>
                     </div>
-    
+
                     <!-- Form untuk kode diskon -->
                     <div class="diskon tambahan mt-4">
                         <form action="{{ route('cart.applyDiscount') }}" method="POST">
@@ -119,7 +125,7 @@
                         </form>
                     </div>
                     <!-- Akhir Form untuk kode diskon -->
-    
+
                     <!-- Form untuk pesan khusus -->
                     <div class="pesan tambahan mt-4">
                         <form action="{{ route('cart.storeOrder') }}" method="POST">
@@ -127,15 +133,17 @@
                             <label for="special_message" class="form-label">Catatan</label>
                             <textarea class="form-control" id="special_message" name="special_message" placeholder="Masukkan pesan khusus untuk pesanan Anda di sini"></textarea>
                             <div class="d-grid gap-2 mt-2">
-                                <button type="submit" class="btn btn-primary" id="pay-button">Bayar</button>
+                                <button type="submit" class="btn btn-primary" id="pay-button">Pesan</button>
                             </div>
                         </form>
                     </div>
                     <!-- Akhir Form untuk pesan khusus -->
                 </div>
                 <!-- Akhir Kolom kanan untuk menampilkan total harga dan pesanan tambahan -->
+                @endif
             </div>
         </div>
+
         <!--Akhir Isi Page-->
         <!--Footer-->
         @include('partials.footer')

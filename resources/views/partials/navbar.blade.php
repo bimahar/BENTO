@@ -57,6 +57,10 @@
                   Welcome back, {{ auth()->user()->username }}
               </a>
               <ul class="dropdown-menu">
+                <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#staticBackdrop" href="#" dusk="logoutLink">Logout</a></li>
+
+              </ul>
+              {{-- <ul class="dropdown-menu">
                   @if(auth()->user()->username === 'App')
                       <li><a class="dropdown-item" href="/dashboard">My dashboard</a></li>
                       <li><hr class="dropdown-divider"></li>
@@ -65,7 +69,7 @@
                       <li><hr class="dropdown-divider"></li>
                   @endif
                   <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#staticBackdrop" href="#" dusk="logoutLink">Logout</a></li>
-              </ul>
+              </ul> --}}
           </li>
             @else
             <li class="nav-item ">

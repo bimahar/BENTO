@@ -18,18 +18,20 @@ class MenuController extends Controller
      */
     public function menu()
     {
+        $user = Auth::user();
         $categories = Menu::pluck('kategori')->unique();
         $menus = Menu::all();
         $sort = 'null';
         $title = 'Menu';
         // Count total items in the shopping cart
         $totalItems = 0;
+        $user = Auth::user();
         if (Auth::check()) {
             $user_id = Auth::id();
             $totalItems = CartItem::where('user_id', $user_id)->sum('jumlah');
         }
         // Render view and include $totalItems
-        return view('menu', compact('menus', 'categories', 'sort', 'title', 'totalItems'));
+        return view('menu', compact('menus', 'categories', 'sort', 'title', 'totalItems', 'user', 'user'));
     }
 
     public function searchMenu(Request $request)
@@ -39,7 +41,12 @@ class MenuController extends Controller
         $menus = Menu::where('nama', 'like', "%$query%")->get();
         $sort = 'null';
         $title = 'menu';
-        return view('menu', compact('menus', 'categories', 'sort', 'title'));
+        $user = Auth::user();
+        if (Auth::check()) {
+            $user_id = Auth::id();
+            $totalItems = CartItem::where('user_id', $user_id)->sum('jumlah');
+        }
+        return view('menu', compact('menus', 'categories', 'sort', 'title', 'totalItems', 'user_id', 'user'));
     }
 
     public function searchMenuByCategory($kategori, Request $request)
@@ -50,7 +57,12 @@ class MenuController extends Controller
         $menus = Menu::where('kategori', $kategori)->where('nama', 'like', "%$query%")->paginate(4);
         $sort = 'null';
         $title = 'menu';
-        return view('showmenubycategory', compact('menus', 'categories', 'categorynow', 'sort', 'title'));
+        $user = Auth::user();
+        if (Auth::check()) {
+            $user_id = Auth::id();
+            $totalItems = CartItem::where('user_id', $user_id)->sum('jumlah');
+        }
+        return view('showmenubycategory', compact('menus', 'categories', 'categorynow', 'sort', 'title', 'user', 'user_id', 'totalItems'));
     }
 
     public function sortmenu($option)
@@ -66,7 +78,12 @@ class MenuController extends Controller
                 $menus = Menu::orderByDesc('harga')->get();
                 break;
         }
-        return view('menu', compact('menus', 'categories', 'sort', 'title'));
+        $user = Auth::user();
+        if (Auth::check()) {
+            $user_id = Auth::id();
+            $totalItems = CartItem::where('user_id', $user_id)->sum('jumlah');
+        }
+        return view('menu', compact('menus', 'categories', 'sort', 'title', 'user', 'user_id', 'totalItems'));
     }
 
     public function showMenuByCategory($kategori)
@@ -76,7 +93,12 @@ class MenuController extends Controller
         $categorynow = $kategori;
         $sort = "null";
         $title = 'menu';
-        return view('showmenubycategory', compact('menus', 'categories', 'categorynow', 'sort', 'title'));
+        $user = Auth::user();
+        if (Auth::check()) {
+            $user_id = Auth::id();
+            $totalItems = CartItem::where('user_id', $user_id)->sum('jumlah');
+        }
+        return view('showmenubycategory', compact('menus', 'categories', 'categorynow', 'sort', 'title', 'user', 'user_id', 'totalItems'));
     }
 
     public function sortShowMenuByCategory($kategori, $option)
@@ -93,8 +115,11 @@ class MenuController extends Controller
                 $menus = Menu::where('kategori', $kategori)->orderByDesc('harga')->paginate(4);
                 break;
         }
-
-        return view('showmenubycategory', compact('menus', 'categories', 'categorynow', 'sort', 'title'));
+        if (Auth::check()) {
+            $user_id = Auth::id();
+            $totalItems = CartItem::where('user_id', $user_id)->sum('jumlah');
+        }
+        return view('showmenubycategory', compact('menus', 'categories', 'categorynow', 'sort', 'title', 'user', 'user_id', 'totalItems'));
     }
 
     public function adminMenuMakanan()

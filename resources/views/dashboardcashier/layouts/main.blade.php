@@ -3,6 +3,10 @@
   <head><script src="../assets/js/color-modes.js"></script>
 
     <meta charset="utf-8">
+    <head>
+      <meta name="csrf-token" content="{{ csrf_token() }}">
+      <!-- Tag head lainnya -->
+  </head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Bento Kopi | Dashboard</title>    
 
@@ -16,15 +20,28 @@
     <!-- Custom styles for this template -->
     <link href="/css/dashboard.css" rel="stylesheet">
   </head>
-  <body> 
+  <body>
+    <div>
+      
+<main>
+  
+        @include('dashboardcashier.layouts.header')
+        
+        <div class="row">
 
-@include('dashboardcashier.layouts.header')
-    <main>
-        @yield('container')
-    </main>
-  </div>
-</div>
+          @include('dashboardcashier.layouts.sidebar')
+      
+          <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+            
+            @yield('container')
+          </main>
+        </div>
+
+
+    
+</main>
+    </div>
+</body>
+  
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 
-<script src="dashboard.js"></script></body>
-</html>

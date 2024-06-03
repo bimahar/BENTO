@@ -19,7 +19,7 @@ class BerandaController extends Controller
     {
         $user = Auth::user();
 
-        if($user->id == 3){
+        if($user->id == 2){
             return view('dashboard.index');
         }
         else{
